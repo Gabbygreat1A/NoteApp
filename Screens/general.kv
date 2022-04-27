@@ -1,0 +1,341 @@
+#: import toast kivymd.toast.toast
+#: import Window kivy.core.window.Window
+#: import toast kivymd.toast.toast
+#: import get_color_from_hex kivy.utils.get_color_from_hex
+#: import OpacityScrollEffect kivy.effects.scroll.ScrollEffect
+<NoteLeave>
+	main: app
+	size_hint: .9, None
+	height: '150dp'
+	md_bg_color: app.theme_cls.primary_dark
+	pos_hint: {'center_x': .5}
+	radius: 10, 10, 10, 10
+	elevation: 8
+	orientation: 'vertical'
+	#: import get_color_from_hex kivy.utils.get_color_from_hex
+	MDBoxLayout:
+		MDBoxLayout:
+			id: descbox
+			orientation: 'vertical'
+			padding: 10, 0, 0, 0
+			CustLabel:
+				text: f'Title: {root.title}'
+			CustLabel:
+				text: f'On: {root.date}'
+			CustLabel:
+				id: deadline
+				text: f'Deadline: {root.deadline}'
+	MDSeparator:
+		color: app.theme_cls.bg_light
+		height: 2
+	MDBoxLayout:
+		adaptive_height: True
+		MDBoxLayout:
+			adaptive_height: True
+			MDIconButton:
+				icon: 'eye'
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.opposite_bg_normal
+				on_release: root.reveal(root.desc, self)
+			MDIconButton:
+				icon: 'pencil'
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.opposite_bg_normal
+				on_release: root.editNote(root.title, root.desc, root.deadline)
+		MDIconButton:
+			id: mark
+			icon: 'check-bold'
+			md_bg_color_disabled: root.md_bg_color
+			theme_text_color: 'Custom'
+			text_color: app.theme_cls.opposite_bg_normal
+			disabled: True
+			opacity: 0
+			on_release:
+				toast('CONGRATULATIONS...', background=app.theme_cls.primary_dark)
+				app.config.set('General', 'achieve_counter', int(app.config.get('General', 'achieve_counter'))+1)
+				app.config.update_config('main.ini')
+				app.deleteNote(root.title, True)
+				app.contentbody.ids.achieved.text = 'Achieved Tasks: '+app.config.get('General', 'achieve_counter')
+		MDIconButton:
+			id: 'trash'
+			theme_text_color: 'Custom'
+			text_color: app.theme_cls.opposite_bg_normal
+			icon: 'trash-can'
+			on_release: app.deleteNote(root.title)
+			
+<ScrollBody>
+	do_scroll_x: False
+	size: root.width, root.height
+	bar_width: '10dp'
+	bar_color: app.theme_cls.primary_dark
+	scroll_type: ['bars', 'content']
+	effect_cls: OpacityScrollEffect
+	MDBoxLayout:
+		orientation: 'vertical'
+		size_hint: 1, None
+		height: self.minimum_height
+		spacing: 10
+		id: box
+		padding: 0, 20, 0, 0
+
+
+<RevealBox>:
+    adaptive_height: True
+    ScrollView:
+		effect_cls: OpacityScrollEffect
+		bar_color: 1, 1, 1, 1
+		MDBoxLayout:
+            adaptive_height: True
+			CustLabel:
+				text: f'Description: {root.text}'
+				id: app_usage
+				size_hint_y: None
+				height: self.texture_size[1]
+
+<CustLabel@MDLabel>
+	theme_text_color: 'Custom'
+	text_color: 1, 1, 1, 1
+	markup: True
+	bold: True
+	font_name: 'Fonts/Glint.ttf'
+
+<SaveButton>
+	id: savebutton
+	icon: 'check-bold'
+	user_font_size: "40sp"
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_color
+	md_bg_color: 0, 0, 0, 0
+	md_bg_color_disabled: 1, 1, .9, 1
+	opacity: 0
+
+<NewSaveButton>
+	on_release: app.saveNote(app.root.ids.note.ids.title, app.root.ids.note.ids.desc)
+
+<EditSaveButton>
+	on_release:
+		app.saveNote(app.root.ids.noteedit.ids.title, app.root.ids.noteedit.ids.desc, app.root.ids.noteedit.edit_title)
+
+<NameFieldBox>
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '100dp'
+    MDTextField:
+        id: name
+        hint_text: 'Enter Your Name'
+        max_text_length: 15
+    MDLabel:
+        text: 'The Name Will Be Used As Your Default Name'
+        halign: 'center'
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_dark
+    Widget
+
+<EmailFieldBox>
+    orientation: 'vertical'
+    size_hint_y: None
+    height: '100dp'
+    MDTextField:
+        id: name
+        hint_text: 'Enter Your Email'
+        max_text_length: 40
+    MDLabel:
+        text: 'The Email Account Will Be Used To Create Your Cloud Storage'
+        halign: 'center'
+        theme_text_color: 'Custom'
+        text_color: app.theme_cls.primary_dark
+    Widget
+
+<CustomFileManager>
+    main: app
+
+<SettingOneLineIcon@OneLineIconListItem>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	_no_ripple_effect: True
+
+<SettingOneLine>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	_no_ripple_effect: True
+
+<SettingThreeLineIcon@ThreeLineIconListItem>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	_no_ripple_effect: True
+
+<SettingTwoLineIcon@TwoLineIconListItem>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	_no_ripple_effect: True
+
+<SettingOneLineAvatarIcon@OneLineAvatarIconListItem>
+	_no_ripple_effect: True
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	_no_ripple_effect: True
+
+<SettingIcon@IconLeftWidget>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+
+<SettingIconRight@IconRightWidget>
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+
+<NameField@MDBoxLayout>
+	MDLabel:
+		text: 'Name'
+
+<SettingLabel@MDLabel>
+	bold: True
+	theme_text_color: 'Custom'
+	text_color: app.theme_cls.primary_dark
+	adaptive_height: True	
+
+<ImageSetter>:
+	#: import FadeTransition kivy.uix.screenmanager
+    md_bg_color: app.theme_cls.opposite_bg_normal
+    MDBoxLayout:
+        size_hint_x: .7
+        pos_hint: {'center_x': .5}
+        line_color: 1, 0, 0, 1
+        FitImage:
+            source: root.source
+
+    MDRaisedButton:
+        text: 'Cancel'
+        pos_hint: {'x': 0, 'y': 0}
+        on_release:
+        	app.root.ids.default.ids.setting.ids.manager.current = 'setting'
+    MDRaisedButton:
+        text: 'Save'
+        pos_hint: {'right': 1, 'y': 0}
+        on_release: root.snap()
+
+<AppDialogChangeColor>
+	size_hint: None, None
+    height: Window.height * 80 / 100
+    width: Window.width * 80 / 100
+
+    MDBoxLayout:
+        orientation: "vertical"
+        md_bg_color: [1, 1, 1, 1] if app.theme_cls.theme_style == 'Light' else [0, 0, 0, .5]
+        radius: 20, 20, 20, 20
+        MDBoxLayout:
+            id: box
+            padding: "10dp"
+            spacing: "10dp"
+            size_hint_y: .35
+
+            Image:
+                source: 'Images/palette.png'
+                size_hint: None, None
+                size: box.height, box.height + dp(40)
+
+            MDLabel:
+                theme_text_color: "Hint"
+                text: "Change App Color"
+                font_style: "Button"
+                bold: True
+
+        RecycleView:
+            id: rv
+            key_viewclass: "viewclass"
+            key_size: "height"
+
+            RecycleBoxLayout:
+                default_size: None, dp(48)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: "vertical"
+
+<ColorListItem>
+	text: root.text
+	theme_text_color: 'Custom'
+	on_release:
+		self.parent.parent.parent.parent.dismiss()
+		app.theme_cls.primary_palette = root.text
+		app.config.set('General', 'palette', self.theme_cls.primary_palette)
+        app.config.update_config('main.ini')
+        app.root.ids.default.ids.bottomnav.text_color_active = self.theme_cls.primary_color
+        toast('Your Desired App Color Changes Has Been Saved!...', background=self.theme_cls.primary_dark)
+	IconLeftWidget:
+		icon: root.icon
+		theme_text_color: 'Custom'
+		text_color: root.text_color
+
+<HCustLabel@CustLabel>
+	text_color: app.theme_cls.primary_dark
+	font_size: 25
+	size_hint_y: None
+	height: self.texture_size[1]
+
+<HistoryList>
+	adaptive_height: True
+	orientation: 'vertical'
+	spacing: 10
+	MDBoxLayout:
+		adaptive_height: True
+		MDIcon:
+			id: icon
+			adaptive_width: True
+			theme_text_color: 'Custom'
+			text_color: app.theme_cls.primary_dark
+			halign: 'center'
+		HCustLabel:
+			id: text
+			text_color: app.theme_cls.primary_dark
+	MDTextButton:
+		id: button
+		text: 'Click to View more...'
+		theme_text_color: 'Hint'
+		font_style: 'Button'
+		bold: True
+		on_release: root.parent.parent.parent.parent.open_history_info(text.text)
+	MDSeparator:
+		color: [1, 1, 1, .5] if app.theme_cls.theme_style == 'Dark' else [0, 0, 0, .5]
+		height: 1.5
+
+#<MDDialog>
+#	md_bg_color: [0, 0, 0, 1]if app.theme_cls.theme_style=='Light'else [1, 1, 1, 1]
+
+<HistoryNote>
+	main: app
+	size_hint: None, None
+	md_bg_color: app.theme_cls.primary_dark
+	CustLabel:
+		text: root.text
+		halign: 'center'
+
+<HistoryInfo>
+	size_hint: .8, .7
+	MDBoxLayout:
+		orientation: 'vertical'
+		md_bg_color: [0, 0, 0, 1]if app.theme_cls.theme_style=='Light'else [1, 1, 1, 1]
+		radius: 20, 20, 20, 20
+		padding: '30dp'
+		HCustLabel:
+			text: root.text
+			halign: 'center'
+			font_size: 30
+		ScrollView
+			do_scroll_x: False
+			size: root.width, root.height
+			bar_width: '7dp'
+			bar_color: app.theme_cls.primary_dark
+			effect_cls: OpacityScrollEffect
+			MDGridLayout:
+				cols: 2
+				id: box
+				adaptive_height: True
+				pos_hint: {'center_x': .5}
+				spacing: '15dp'
+				padding: '30dp'
+
+<DialogLabel@CustLabel>
+	text_color: app.theme_cls.primary_dark
+	halign: 'center'
+	font_name: 'Fonts/Posse.ttf'
+	font_size: '20dp'

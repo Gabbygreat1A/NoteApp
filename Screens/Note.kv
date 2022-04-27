@@ -1,0 +1,53 @@
+<Note>
+	name: 'note'
+	MDBoxLayout:
+		orientation: 'vertical'
+		spacing: 5
+		padding: 0, 0, 0, 5
+		MDBoxLayout:
+			adaptive_height: True
+			MDIconButton:
+				icon: 'keyboard-backspace'
+				user_font_size: "40sp"
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.primary_color
+				on_release: app.goBack()
+			Widget:
+				size_hint_x: .8
+			AnchorLayout:
+				anchor_x: 'right'
+				id: savebox
+		BoxLayout:
+			orientation: 'vertical'
+			MDTextField:
+				id: title
+				hint_text: 'Title'
+				mode: 'rectangle'
+				size_hint_x: .9
+				pos_hint: {'center_x': .5}
+				on_text: root.toogleSaveButton(self, desc)
+			MDTextField:
+				id: desc
+				hint_text: 'Description'
+				multiline: True
+				max_text_length: 500
+				mode: 'rectangle'
+				size_hint: .9, 1
+				pos_hint: {'center_x': .5}
+				on_text: root.toogleSaveButton(title, self)
+		MDBoxLayout:
+			adaptive_height: True
+			padding: 20, 0, 0, 0
+			MDRectangleFlatIconButton:
+				id: deadbtn
+				text: 'Set Deadline'
+				icon: 'clock-time-two-outline'
+				pos_hint: {'center_x': .5}
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.primary_dark
+				on_release: app.show_time_picker()
+			MDLabel:
+				id: deadline
+				halign: 'center'
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.primary_dark

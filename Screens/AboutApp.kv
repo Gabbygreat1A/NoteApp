@@ -1,0 +1,50 @@
+#: import StiffScrollEffect kivymd.effects.stiffscroll.StiffScrollEffect
+<AboutApp>
+	size_hint: None, None
+    height: Window.height * 80 / 100
+    width: Window.width * 80 / 100
+	MDBoxLayout:
+		orientation: 'vertical'
+		md_bg_color: [0, 0, 0, 1]if app.theme_cls.theme_style=='Light'else [1, 1, 1, 1]
+		radius: 20, 20, 20, 20
+		padding: 20
+		CustLabel:
+			id: header
+			text: 'About The App'
+			adaptive_height: True
+			text_color: app.theme_cls.primary_dark
+			underline: True
+			font_size: 1
+			valign: 'top'
+			halign: 'center'
+		MDBoxLayout:
+			orientation: 'vertical'
+			pos_hint: {'center_x': .5}
+			padding: 10, 0, 10, 0
+			ScrollView:
+				effect_cls: StiffScrollEffect
+				bar_color: app.theme_cls.primary_dark
+				MDBoxLayout:
+	                adaptive_height: True
+	                padding: "20dp"
+					CustLabel:
+						id: about_text
+						opacity: 0
+						size_hint_y: None
+						height: self.texture_size[1]
+						text_color: app.theme_cls.primary_dark
+		MDBoxLayout:
+			adaptive_height: True
+			pos_hint: {'center_x': .5}
+			MDIcon:
+				icon: 'copyright'
+				adaptive_width: True
+				adaptive_height: True
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.primary_dark
+				halign: 'right'
+			CustLabel:
+				text: 'By Gabriel Oranekwu 2021'
+				text_color: app.theme_cls.primary_dark
+				pos_hint: {'left': 0}
+				adaptive_height: True

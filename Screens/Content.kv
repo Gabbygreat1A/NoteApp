@@ -1,0 +1,61 @@
+<EmptyNote>
+	size: root.size
+	pos: root.pos
+	Image:
+		size_hint: .6, .9
+		source: 'Images/home.png'
+		pos_hint: {'center_x': .5}
+
+<ContentBody>:
+	orientation: 'vertical'
+	MDBoxLayout:
+		size_hint_y: .32
+		padding: 0, 20, 0, 0
+		MDBoxLayout:
+			orientation: 'vertical'
+			size_hint_x: .4
+			padding: 40, 0, 40, 0
+			MDBoxLayout:
+				canvas:
+					Color:
+						rgba: 1, 1, 1, 1
+					Ellipse:
+						id: user_image
+						size: 100, 100
+						pos: self.pos
+						source: app.config.get('General', 'user_image')
+			CustLabel:
+				id: user_name
+				text: app.config.get('General', 'user_name')
+				halign: 'center'
+				valign: 'bottom'
+				adaptive_height: True
+				text_color: app.theme_cls.primary_dark
+		MDGridLayout:
+			cols: 1
+			size_hint_x: .6
+			CustLabel:
+				id: time
+				text_color: app.theme_cls.primary_dark
+				font_name: 'Fonts/clock.ttf'
+			Widget:
+				height: 15
+			CustLabel:
+				id: date
+				text_color: app.theme_cls.primary_dark
+			CustLabel:
+				id: active_note
+				text_color: app.theme_cls.primary_dark
+			CustLabel:
+				id: achieved
+				text: 'Achieved Tasks: '+app.config.get('General', 'achieve_counter')
+				text_color: app.theme_cls.primary_dark
+			MDTextButton:
+				text: 'see more'
+				bold: True
+				underline: True
+				theme_text_color: 'Custom'
+				text_color: app.theme_cls.primary_dark
+				on_release: app.root.ids.default.ids.bottomnav.switch_tab('Screen 2')
+	MDBoxLayout:
+		id: holder

@@ -1,0 +1,132 @@
+#: import toast kivymd.toast.toast
+#: import Clipboard kivy.core.clipboard.Clipboard
+#: import OpacityScrollEffect kivy.effects.scroll.ScrollEffect
+<Setting>
+	main: app
+	ScreenManager:
+		id: manager
+		MDScreen:
+			name: 'setting'
+			MDBoxLayout:
+				ScrollView:
+					do_scroll_x: False
+					size: root.width, root.height
+					bar_width: '7dp'
+					bar_color: app.theme_cls.primary_dark
+					bar_inactive_color: app.theme_cls.primary_light
+					scroll_type: ['bars', 'content']
+					effect_cls: OpacityScrollEffect
+					MDBoxLayout:
+						orientation: 'vertical'
+						size_hint: 1, None
+						height: self.minimum_height
+						spacing: 10
+						padding: 10, 20, 10, 0
+						SettingLabel:
+							text: 'User Account And Services'
+						MDList:
+							SettingTwoLineIcon:
+								id: email
+								text: 'Set User Email'
+								secondary_text: app.config.get('General', 'user_email')
+								on_release: root.openEmailField()
+								SettingIcon:
+									icon: 'card-account-mail'
+							SettingTwoLineIcon:
+								id: name
+								text: 'Set Your Name'
+								secondary_text: app.config.get('General', 'user_name')
+								on_release: root.openNameField()
+								SettingIcon:
+									icon: 'rename-box'
+							SettingOneLineIcon:
+								text: 'Set Profile Picture'
+								on_release: root.file_manager_open()
+								SettingIcon:
+									icon: 'account'
+							SettingOneLineIcon:
+								text: 'Sync Data And Notes [b](PRO)[/b]'
+								on_release: app.proMessage()
+								SettingIcon:
+									icon: 'cloud-upload-outline'
+							SettingOneLineIcon:
+								text: 'Restore Data And Notes [b](PRO)[/b]'
+								on_release: app.proMessage()
+								SettingIcon:
+									icon: 'cloud-download-outline'
+							SettingOneLineIcon:
+								text: 'Restore Factory Settings'
+								theme_text_color: 'Error'
+								on_release:
+									root.restoreDefault()
+								SettingIcon:
+									icon: 'autorenew'
+									theme_text_color: 'Error'
+						SettingLabel:
+							text: 'Appearance'
+						MDList:
+							SettingOneLineAvatarIcon:
+								text: 'Dark Mode'
+								on_release:
+									app.theme_cls.theme_style='Light' if theme.icon =='weather-sunny-off' else 'Dark'
+							        toast('Dark Mode Enabled...', background=self.theme_cls.primary_dark) if app.theme_cls.theme_style =='Dark' else toast('Light Mode Enabled...', background=self.theme_cls.primary_dark)
+							        app.config.set('General', 'theme_color', app.theme_cls.theme_style)
+							        app.config.update_config('main.ini')
+								SettingIcon:
+									id: theme
+									icon: 'weather-sunny' if app.theme_cls.theme_style == 'Light' else 'weather-sunny-off'
+								ToggleBox:
+									active: False if app.theme_cls.theme_style == 'Light' else True
+									on_active:
+										app.theme_cls.theme_style = 'Light' if theme.icon =='weather-sunny-off' else 'Dark'
+										app.config.set('General', 'theme_color', app.theme_cls.theme_style)
+										app.config.update_config('main.ini')
+										toast('Dark Mode Enabled...', background=self.theme_cls.primary_dark) if app.theme_cls.theme_style =='Dark' else toast('Light Mode Enabled...', background=self.theme_cls.primary_dark)
+						MDList:
+							SettingOneLineIcon:
+								text: 'User Defined App Color'
+								on_release:
+									root.setAppColor()
+								SettingIcon:
+									icon: 'format-color-fill'
+							
+						SettingLabel:
+							text: 'Pro Upgrade'
+						MDList:
+							SettingThreeLineIcon:
+								text: '[b]Upgrade Now[/b]'
+								secondary_text: 'Enjoy Countless Features...'
+								tertiary_text: 'For Only [b]NGN 1000[/b]'
+								SettingIcon:
+									icon: 'arrow-up-bold-circle-outline'
+						SettingLabel:
+							text: 'About The App'
+						MDList:
+							SettingOneLineIcon:
+								text: 'About [b]NoteApp[/b]'
+								on_release:
+									app.aboutapp.open()
+								SettingIcon:
+									icon: 'application'
+							SettingOneLineIcon:
+								text: '[b]NoteApp[/b] Usage'
+								on_release:
+									app.app_usage.open()
+								SettingIcon:
+									icon: 'information-outline'
+						SettingLabel:
+							text: 'Developer Contact'
+						MDList:
+							SettingOneLineIcon:
+								text: '[b]gabrieloranekwu@gmail.com[/b]'
+								on_release:
+									Clipboard.copy('gabrieloranekwu@gmail.com')
+									toast('Copied Email', background=self.theme_cls.primary_dark)
+								SettingIcon:
+									icon: 'email'		
+		MDScreen:
+			name: 'editimage'
+			id: editimage
+			ImageSetter:
+				main: app
+				source: root.path

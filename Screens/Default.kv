@@ -1,0 +1,36 @@
+<Default>
+	name: 'default'
+	on_pre_enter: app.reloadNote()
+	MDBottomNavigation:
+		id: bottomnav
+		text_color_active: app.theme_cls.primary_dark
+        MDBottomNavigationItem:
+            name: "Screen 1"
+            text: 'NOTES'
+            icon: 'notebook'
+			MDBoxLayout:
+				orientation: 'vertical'
+				MDBoxLayout:
+					orientation: 'vertical'
+					id: container
+			MDFloatingActionButton:
+				icon: 'plus'
+				pos_hint: {'center_x': .5, 'y': .005}
+				theme_text_color: 'Custom'
+				text_color: 1, 1, .9, 1
+				on_release: app.changeScreen('note')
+				md_bg_color: app.theme_cls.primary_color
+		MDBottomNavigationItem:
+			name: 'Screen 2'
+			icon: 'history'
+			text: 'HISTORY'
+			on_tab_press:
+				history.on_pre_enter()
+			History:
+				id: history
+		MDBottomNavigationItem:
+			name: 'Screen 3'
+			text: 'SETTINGS'
+			icon: 'wrench'
+			Setting:
+				id: setting

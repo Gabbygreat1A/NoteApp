@@ -1,0 +1,40 @@
+#: import OpacityScrollEffect kivy.effects.scroll.ScrollEffect
+<History>
+	main: app
+	MDBoxLayout:
+		orientation: 'vertical'
+		padding: '10dp'
+		ScrollView
+			do_scroll_x: False
+			size: root.width, root.height
+			bar_width: '7dp'
+			bar_color: app.theme_cls.primary_dark
+			effect_cls: OpacityScrollEffect
+			MDBoxLayout:
+				adaptive_height: True
+				orientation: 'vertical'
+				spacing: '15dp'
+				HistoryList:
+					id: active_label
+				HistoryList:
+					id: today_label
+				HistoryList:
+					id: tomorrow_label
+				HistoryList:
+					id: no_deadline
+				HistoryList:
+					id: others_label	
+				HistoryList:
+					id: achieved_label
+				HistoryList:
+					id: ignored_label
+				
+				
+		MDRectangleFlatIconButton:
+			text: 'Clear Data In Achieved And Ignored Task(s)'
+			icon: 'delete'
+			pos_hint: {'center_x': .5}
+			theme_text_color: 'Custom'
+			text_color: app.theme_cls.primary_dark
+			on_release:
+				root.resetHistory()
